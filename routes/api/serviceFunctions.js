@@ -8,21 +8,18 @@ const get = async (req, res) => {
 const getById = async (req, res) => {
 	const { id } = req.params;
 	const result = await Contact.findById(id);
-	if (!result) {
-		res.status(404).json({ message: "Not found" });
-	} else {
-		res.json(result);
-	}
+	!result
+		? res.status(404).json({ message: "Not found" })
+		: res.json(result);
+
 };
 
 const remove = async (req, res) => {
 	const { id } = req.params;
 	const result = await Contact.findByIdAndRemove(id);
-	if (!result) {
-		res.status(404).json({ message: "Not found" });
-	} else {
-		res.status(204).json({ message: "User deleted" });
-	}
+	!result
+		? res.status(404).json({ message: "Not found" })
+		: res.status(204).json({ message: "User deleted" });
 };
 
 const add = async (req, res) => {
@@ -42,12 +39,11 @@ const update = async (req, res) => {
 		res.status(400).json({ message: "Missing required name field" });
 		return;
 	}
+
 	const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-	if (!result) {
-		res.status(404).json({ message: "Not found" });
-	} else {
-		res.json(result);
-	}
+	!result
+		? res.status(404).json({ message: "Not found" })
+		: res.json(result);
 };
 
 const updateStatus = async (req, res) => {
