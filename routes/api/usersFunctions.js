@@ -9,11 +9,7 @@ const { SECRET_KEY } = process.env;
 
 const listCurrent = async (req, res) => {
 	const { name, email, subscription } = req.user;
-	res.json({
-		name,
-		email,
-		subscription,
-	});
+	res.json({ name, email, subscription });
 };
 
 const registration = async (req, res) => {
@@ -78,7 +74,7 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
 	const { _id } = req.user;
-	await User.findByIdAndUpdate(_id, { token: "" });
+	await User.findByIdAndUpdate(_id, { token: null });
 	res.status(204).send();
 };
 
@@ -92,9 +88,7 @@ const setAvatar = async (req, res) => {
 		await fs.rename(tempPath, uploadPath);
 		const avatarURL = path.join("avatars", newName);
 		await User.findByIdAndUpdate(_id, { avatarURL });
-		res.json({
-			avatarURL,
-		});
+		res.json({ avatarURL });
 	} catch (error) {
 		await fs.unlink(req.file.path);
 		throw error;

@@ -8,19 +8,17 @@ const get = async (req, res) => {
 const getById = async (req, res) => {
 	const { id } = req.params;
 	const result = await Contact.findById(id);
-	if (!result || result === undefined) {
-		res.status(404).json({ message: "Not found" });
-	} else {
-		res.json(result);
-	}
+	result
+		? res.status(200).json(result)
+		: res.status(404).json({ message: "Not found" });
 };
 
 const remove = async (req, res) => {
 	const { id } = req.params;
 	const result = await Contact.findByIdAndRemove(id);
-	!result
-		? res.status(404).json({ message: "Not found" })
-		: res.status(204).json({ message: "User deleted" });
+	result
+		? res.status(204).json({ message: "User deleted" })
+		: res.status(404).json({ message: "Not found" });
 };
 
 const add = async (req, res) => {
@@ -41,9 +39,9 @@ const update = async (req, res) => {
 		return;
 	}
 	const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-	!result
-		? res.status(404).json({ message: "Not found" })
-		: res.json(result);
+	result
+		? res.json(result)
+		: res.status(404).json({ message: "Not found" });
 };
 
 const updateStatus = async (req, res) => {
@@ -54,11 +52,10 @@ const updateStatus = async (req, res) => {
 		return;
 	}
 	const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-	if (!result) {
-		res.status(404).json({ message: "Not found" });
-		return;
-	}
-	res.json(result);
+	result
+		? res.json(result)
+		: res.status(404).json({ message: "Not found" });
+	
 };
 
 module.exports = {
